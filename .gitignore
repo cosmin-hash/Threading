@@ -1,0 +1,20 @@
+# Build output (any project)
+build/
+
+# Caches and tool/editor directories
+.cache/
+.claude/
+.vscode/
+
+# Compiled binaries / libraries
+*.exe
+*.dll
+
+# Qt Creator / IDE
+*.user
+*.autosave
+CMakeLists.txt.user*
+
+# OS cruft
+.DS_Store
+Thumbs.db

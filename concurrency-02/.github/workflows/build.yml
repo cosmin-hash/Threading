@@ -1,0 +1,71 @@
+name: build
+
+# Proves the project compiles and links on Windows, Linux and macOS, and that
+# the binary starts cleanly (headless smoke test on Linux).
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Qt 6 for every OS (MSVC on Windows, gcc on Linux, clang on macOS).
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.*'
+          cache: true
+
+      # Qt's Gui module needs OpenGL/xcb dev headers to link on Linux runners.
+      - name: Install Linux build deps
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-dev libxkbcommon-dev
+
+      # install-qt-action puts Qt on CMAKE_PREFIX_PATH, so no -DCMAKE_PREFIX_PATH needed.
+      - name: Configure
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release --parallel
+
+      # Launch headlessly (offscreen platform plugin) to confirm it starts and
+      # the event loop runs; then stop it. Proves linking + startup, not just compile.
+      - name: Smoke test (headless)
+        if: runner.os == 'Linux'
+        run: |
+          export QT_QPA_PLATFORM=offscreen
+          ./build/ThreadingViz &
+          PID=$!
+          sleep 5
+          if kill -0 "$PID" 2>/dev/null; then
+            echo "ThreadingViz started and is running."
+            kill "$PID"
+          else
+            echo "ThreadingViz exited early." >&2
+            exit 1
+          fi
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: ThreadingViz-${{ matrix.os }}
+          path: |
+            build/ThreadingViz
+            build/ThreadingViz.exe
+            build/ThreadingViz.app
+          if-no-files-found: warn

@@ -1,0 +1,83 @@
+name: build
+
+# Repo-wide CI: builds all four concurrency visualisers on Windows, Linux and
+# macOS, and proves each binary starts cleanly (headless smoke test on Linux).
+# This root workflow is the one GitHub runs and the one the README badge tracks;
+# each project also keeps its own .github/workflows/build.yml for standalone use.
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: ${{ matrix.project }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        project: [ concurrency-01, concurrency-02, concurrency-03, concurrency-04 ]
+        include:
+          - project: concurrency-01
+            app: ThreadingViz
+          - project: concurrency-02
+            app: ThreadingViz
+          - project: concurrency-03
+            app: PipelineViz
+          - project: concurrency-04
+            app: WorkStealingViz
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Qt 6 for every OS (MSVC on Windows, gcc on Linux, clang on macOS).
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: '6.8.*'
+          cache: true
+
+      # Qt's Gui module needs OpenGL/xcb dev headers to link on Linux runners.
+      - name: Install Linux build deps
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libgl1-mesa-dev libxkbcommon-dev
+
+      # install-qt-action puts Qt on CMAKE_PREFIX_PATH, so no -DCMAKE_PREFIX_PATH needed.
+      - name: Configure
+        run: cmake -S ${{ matrix.project }} -B ${{ matrix.project }}/build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build ${{ matrix.project }}/build --config Release --parallel
+
+      # Launch headlessly (offscreen platform plugin) to confirm it starts and the
+      # event loop runs; then stop it. Proves linking + startup, not just compile.
+      - name: Smoke test (headless)
+        if: runner.os == 'Linux'
+        run: |
+          export QT_QPA_PLATFORM=offscreen
+          ./${{ matrix.project }}/build/${{ matrix.app }} &
+          PID=$!
+          sleep 5
+          if kill -0 "$PID" 2>/dev/null; then
+            echo "${{ matrix.app }} started and is running."
+            kill "$PID"
+          else
+            echo "${{ matrix.app }} exited early." >&2
+            exit 1
+          fi
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.app }}-${{ matrix.project }}-${{ matrix.os }}
+          path: |
+            ${{ matrix.project }}/build/${{ matrix.app }}
+            ${{ matrix.project }}/build/${{ matrix.app }}.exe
+            ${{ matrix.project }}/build/${{ matrix.app }}.app
+          if-no-files-found: warn

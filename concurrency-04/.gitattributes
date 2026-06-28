@@ -1,0 +1,11 @@
+# Normalise line endings so the repo behaves the same on every OS.
+* text=auto
+
+# Shell scripts must stay LF or they won't run on Linux/macOS.
+*.sh text eol=lf
+
+# Windows scripts stay CRLF.
+*.ps1 text eol=crlf
+
+# Treat screenshots as binary.
+*.png binary
