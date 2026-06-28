@@ -94,8 +94,7 @@ legible.
 
 Supporting files: [`CMakeLists.txt`](CMakeLists.txt) (cross-platform build, Qt 6 **or** Qt 5),
 [`run.ps1`](run.ps1) / [`run.sh`](run.sh) (Windows / Unix launchers),
-[`.github/workflows/build.yml`](.github/workflows/build.yml) (CI that builds on all three
-OSes), and [`multi-producer-bounded-queue.cpp`](src/multi-producer-bounded-queue.cpp) (the console
+and [`multi-producer-bounded-queue.cpp`](src/multi-producer-bounded-queue.cpp) (the console
 skeleton this app visualises).
 
 ---
@@ -297,16 +296,10 @@ Displayed** counts.
 
 ### Continuous integration
 
-[`.github/workflows/build.yml`](.github/workflows/build.yml) builds the project on
-`ubuntu-latest`, `windows-latest` and `macos-latest` on every push and pull request — Qt 6 is
-installed per-OS, the app is compiled, and on Linux it is launched headlessly
-(`QT_QPA_PLATFORM=offscreen`) to confirm it starts and its event loop runs. Each successful
-run uploads the built binary (`ThreadingViz` / `.exe` / `.app`) as an artifact. Add a status
-badge once the repo is public:
-
-```markdown
-![build](https://github.com/<user>/<repo>/actions/workflows/build.yml/badge.svg)
-```
+CI lives at the repository root — [`/.github/workflows/build.yml`](../.github/workflows/build.yml)
+builds this project together with the other three on Ubuntu, Windows and macOS on every push/PR
+and smoke-tests the binary headlessly on Linux. The build badge is in the
+[collection README](../README.md).
 
 ---
 

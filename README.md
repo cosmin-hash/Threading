@@ -47,8 +47,8 @@ run across Ubuntu, Windows and macOS).
 * **Watchable pacing.** The real models run in tens of milliseconds; each visualiser slows the
   hand-off to hundreds of ms so the behaviour is legible at ~60 fps.
 * **Same layout, same build.** Each project follows an identical structure
-  (`src/`, `docs/`, `.github/`, top-level `ARCHITECTURE.md` / `CMakeLists.txt` / `LICENSE` /
-  `README.md`) and builds cross-platform with CMake (Qt 6 or Qt 5, `Threads::Threads`).
+  (`src/`, `docs/`, top-level `ARCHITECTURE.md` / `CMakeLists.txt` / `LICENSE` / `README.md`) and
+  builds cross-platform with CMake (Qt 6 or Qt 5, `Threads::Threads`); CI is repo-wide.
 
 ## Console skeletons
 
@@ -74,7 +74,8 @@ platform-specific notes and the `run.ps1` / `run.sh` launchers.
 A repo-level [`.github/workflows/build.yml`](.github/workflows/build.yml) builds **all four
 projects** across Ubuntu, Windows and macOS on each push/PR, smoke-tests each binary headlessly on
 Linux (`QT_QPA_PLATFORM=offscreen`), and uploads the built artifacts — this is what the **build**
-badge at the top reflects. (Each project also keeps its own `build.yml` for standalone use.)
+badge at the top reflects. It is the **one** workflow in the repo; the projects have no separate
+CI of their own.
 
 ## License
 
