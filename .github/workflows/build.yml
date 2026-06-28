@@ -18,7 +18,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        # macos pinned to 15 (Xcode 16): the macos-latest pool is mid-migration to
+        # macOS 26, whose SDK dropped the legacy AGL framework that Qt 6.8's Gui
+        # module still links against ("ld: framework 'AGL' not found").
+        os: [ ubuntu-latest, windows-latest, macos-15 ]
         project: [ concurrency-01, concurrency-02, concurrency-03, concurrency-04 ]
         include:
           - project: concurrency-01
