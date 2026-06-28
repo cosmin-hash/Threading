@@ -79,4 +79,4 @@ CI of their own.
 
 ## License
 
-[MIT](concurrency-01/LICENSE) © 2026 Cosmin Mandachescu — each project carries its own copy.
+[MIT](LICENSE) © 2026 Cosmin Mandachescu — each project also carries its own copy.
