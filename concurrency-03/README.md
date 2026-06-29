@@ -29,7 +29,11 @@ It is the visual analogue of a small console program
 `std::future`-returning thread pool, and a coordinated pipeline with deterministic,
 stage-by-stage shutdown.
 
-![pipeline](docs/screenshot.png)
+
+
+https://github.com/user-attachments/assets/57e538a5-1edb-416e-8a29-64a11c8bccb6
+
+
 
 > See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the threading-model diagram and data flow.
 
