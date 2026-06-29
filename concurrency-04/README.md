@@ -26,7 +26,13 @@ behind real schedulers (Intel TBB, the Go runtime, Rust Rayon/Tokio): per-worker
 steal-from-a-random-victim, so idle cores pull work from busy ones instead of all contending on
 one central queue.
 
-![scheduler](docs/screenshot.png)
+
+
+https://github.com/user-attachments/assets/c0ffc9b7-0b93-4aa8-a85d-29d3d7c8ff97
+
+
+
+
 
 > See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the threading-model diagram and data flow.
 
