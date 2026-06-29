@@ -1,7 +1,5 @@
 # Threading Model Visualiser — Multi-Producer Bounded Queues
 
-<!-- VIDEO -->
-<!-- ^ Demo screen-capture goes here: drag a .mp4/.gif into the GitHub editor, or link a release asset. -->
 
 ![C++17](https://img.shields.io/badge/C%2B%2B-17-00599C?logo=cplusplus&logoColor=white)
 ![Qt 6](https://img.shields.io/badge/Qt-6-41CD52?logo=qt&logoColor=white)
@@ -24,7 +22,11 @@ It is the visual analogue of a small console program
 concurrency core of a Qt 6 / C++20 four-pane video player ("QtOpenGLQuadPlayers"): four image
 streams, each decoded on its own thread and rendered by a single render loop.
 
-![pipeline](docs/screenshot.png)
+
+
+https://github.com/user-attachments/assets/84f5faee-cff1-4cdd-b0bb-adde7c907a17
+
+
 
 > See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the threading-model diagram and data flow.
 
