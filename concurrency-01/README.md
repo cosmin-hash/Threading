@@ -1,11 +1,9 @@
 
 
-https://github.com/user-attachments/assets/b6f9917e-6474-4ec0-a495-ed929a3e57fc
+
 
 # Threading Model Visualiser — Single-Slot Condition-Variable Hand-off
 
-<!-- VIDEO -->
-<!-- ^ Demo screen-capture goes here: drag a .mp4/.gif into the GitHub editor, or link a release asset. -->
 
 ![C++17](https://img.shields.io/badge/C%2B%2B-17-00599C?logo=cplusplus&logoColor=white)
 ![Qt 6](https://img.shields.io/badge/Qt-6-41CD52?logo=qt&logoColor=white)
@@ -29,7 +27,7 @@ that distils the concurrency core of a Qt 6 / C++20 dual-display MP4 player ("Mp
 one worker thread doing per-frame decode/scale/convert off the UI thread, fed through a single
 hand-off slot that drops frames it cannot keep up with.
 
-![pipeline](docs/screenshot.png)
+https://github.com/user-attachments/assets/b6f9917e-6474-4ec0-a495-ed929a3e57fc
 
 > See [`ARCHITECTURE.md`](ARCHITECTURE.md) for the threading-model diagram and data flow.
 
